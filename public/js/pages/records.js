@@ -10,7 +10,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     currentUserRole = user.role;
     currentUserDept = user.department_id;
 
-    await loadDepartmentFilters();
+    // 员工不需要部门筛选和新增按钮
+    if (currentUserRole === 'employee') {
+        // 隐藏部门、小组筛选（员工只看自己的记录）
+        const filterSection = document.querySelector('.filter-section');
+        if (filterSection) {
+            filterSection.querySelectorAll('.form-group').forEach((g, i) => {
+                if (i < 2) g.style.display = 'none'; // 部门、小组
+            });
+        }
+        // 隐藏新增按钮
+        const addBtn = document.getElementById('btnAddRecord');
+        if (addBtn) addBtn.style.display = 'none';
+    } else {
+        await loadDepartmentFilters();
+    }
     await loadRecords();
 
     // 绑定事件
@@ -130,6 +144,7 @@ function renderTable(records) {
         const specGroupTotal = (parseFloat(r.total_amount) * memberCount).toFixed(2);
         const perPerson = parseFloat(r.total_amount).toFixed(2);
 
+        const showDelete = currentUserRole !== 'employee';
         html += `
             <tr>
                 <td>${escapeHtml(r.work_date)}</td>
@@ -139,7 +154,7 @@ function renderTable(records) {
                 <td>${r.quantity}</td>
                 <td>¥${specGroupTotal}</td>
                 <td>¥${perPerson}</td>
-                <td><button class="btn-danger btn-delete" data-id="${r.id}">删除</button></td>
+                <td>${showDelete ? `<button class="btn-danger btn-delete" data-id="${r.id}">删除</button>` : '-'}</td>
             </tr>
         `;
     }
