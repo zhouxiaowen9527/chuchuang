@@ -3,7 +3,54 @@ const { hashPassword, comparePassword } = require('../utils/crypto');
 const { generateToken } = require('../config/auth');
 const { ROLES, USER_STATUS } = require('../config/constants');
 
+// 登录失败记录（内存存储，生产环境建议用 Redis）
+const loginAttempts = new Map();
+const MAX_ATTEMPTS = 5;
+const LOCK_TIME = 15 * 60 * 1000; // 15分钟
+
+// 清理过期的锁定记录
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, value] of loginAttempts.entries()) {
+    if (value.lockUntil && value.lockUntil < now) {
+      loginAttempts.delete(key);
+    }
+  }
+}, 60 * 1000); // 每分钟清理一次
+
 const AuthService = {
+  // 检查账户是否被锁定
+  isAccountLocked(email) {
+    const attempt = loginAttempts.get(email);
+    if (!attempt) return { locked: false };
+    
+    if (attempt.lockUntil && attempt.lockUntil > Date.now()) {
+      const remainingMinutes = Math.ceil((attempt.lockUntil - Date.now()) / 60000);
+      return { locked: true, remainingMinutes };
+    }
+    
+    return { locked: false };
+  },
+
+  // 记录登录失败
+  recordFailedAttempt(email) {
+    const attempt = loginAttempts.get(email) || { count: 0 };
+    attempt.count++;
+    attempt.lastAttempt = Date.now();
+    
+    if (attempt.count >= MAX_ATTEMPTS) {
+      attempt.lockUntil = Date.now() + LOCK_TIME;
+    }
+    
+    loginAttempts.set(email, attempt);
+    return attempt;
+  },
+
+  // 清除失败记录
+  clearFailedAttempts(email) {
+    loginAttempts.delete(email);
+  },
+
   // 注册
   async register(data) {
     // 检查邮箱是否已存在
@@ -30,17 +77,40 @@ const AuthService = {
     return user;
   },
 
-  // 登录
+  // 登录（带失败限制）
   async login(email, password) {
+    // 检查账户是否被锁定
+    const lockStatus = this.isAccountLocked(email);
+    if (lockStatus.locked) {
+      throw new Error(`账户已被锁定，请在 ${lockStatus.remainingMinutes} 分钟后重试`);
+    }
+
     const user = await UserModel.findByEmail(email);
-    if (!user) throw new Error('邮箱或密码错误');
+    if (!user) {
+      const attempt = this.recordFailedAttempt(email);
+      const remaining = MAX_ATTEMPTS - attempt.count;
+      if (remaining > 0) {
+        throw new Error(`邮箱或密码错误，还剩 ${remaining} 次尝试机会`);
+      }
+      throw new Error('邮箱或密码错误');
+    }
 
     if (user.status !== USER_STATUS.APPROVED) {
       throw new Error('账号尚未审核通过，请联系管理员');
     }
 
     const valid = await comparePassword(password, user.password_hash);
-    if (!valid) throw new Error('邮箱或密码错误');
+    if (!valid) {
+      const attempt = this.recordFailedAttempt(email);
+      const remaining = MAX_ATTEMPTS - attempt.count;
+      if (remaining > 0) {
+        throw new Error(`邮箱或密码错误，还剩 ${remaining} 次尝试机会`);
+      }
+      throw new Error('登录失败次数过多，账户已被锁定15分钟');
+    }
+
+    // 登录成功，清除失败记录
+    this.clearFailedAttempts(email);
 
     const token = generateToken({
       id: user.id,

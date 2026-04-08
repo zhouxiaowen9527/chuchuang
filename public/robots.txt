@@ -1,0 +1,18 @@
+# 禁止搜索引擎索引敏感页面
+User-agent: *
+Disallow: /dashboard.html
+Disallow: /records.html
+Disallow: /payroll.html
+Disallow: /profile.html
+Disallow: /users.html
+Disallow: /groups.html
+Disallow: /specs.html
+Disallow: /departments.html
+Disallow: /approvals.html
+Disallow: /maintenance.html
+Disallow: /api/
+Disallow: /.netlify/
+
+# 允许首页
+Allow: /index.html
+Allow: /

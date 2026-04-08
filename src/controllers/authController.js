@@ -31,7 +31,7 @@ const AuthController = {
     try {
       const { old_password, new_password } = req.body;
       if (!old_password || !new_password) return error(res, '请输入原密码和新密码');
-      if (!validators.isPassword(new_password)) return error(res, '新密码至少6位');
+      if (!validators.isPassword(new_password)) return error(res, validators.getPasswordRequirement());
 
       await AuthService.changePassword(req.user.id, old_password, new_password);
       success(res, null, '密码修改成功');

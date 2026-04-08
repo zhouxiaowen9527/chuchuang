@@ -24,9 +24,19 @@ const validators = {
     return /^\d{4}-\d{2}-\d{2}$/.test(dateStr) && !isNaN(Date.parse(dateStr));
   },
 
-  // 密码强度（至少6位）
+  // 密码强度（至少8位，包含大小写字母和数字）
   isPassword(password) {
-    return password && password.length >= 6;
+    if (!password || password.length < 8) return false;
+    // 必须包含大写字母、小写字母和数字
+    const hasUpper = /[A-Z]/.test(password);
+    const hasLower = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    return hasUpper && hasLower && hasNumber;
+  },
+
+  // 密码强度提示
+  getPasswordRequirement() {
+    return '密码至少8位，需包含大写字母、小写字母和数字';
   },
 
   // 非空字符串
@@ -52,7 +62,7 @@ const validators = {
     const errors = [];
     if (!this.isEmail(data.email)) errors.push('邮箱格式不正确');
     if (!this.isNonEmpty(data.real_name)) errors.push('姓名不能为空');
-    if (!this.isPassword(data.password)) errors.push('密码至少6位');
+    if (!this.isPassword(data.password)) errors.push(this.getPasswordRequirement());
     if (data.password !== data.confirm_password) errors.push('两次密码不一致');
     if (!this.isPhone(data.phone)) errors.push('手机号格式不正确');
     if (data.id_card && !this.isIdCard(data.id_card)) errors.push('身份证号格式不正确');

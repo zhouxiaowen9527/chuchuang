@@ -4,6 +4,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const registerForm = document.getElementById('register-form');
     const messageEl = document.getElementById('message');
 
+    // 密码强度验证
+    function validatePassword(password) {
+        if (password.length < 8) return false;
+        const hasUpper = /[A-Z]/.test(password);
+        const hasLower = /[a-z]/.test(password);
+        const hasNumber = /[0-9]/.test(password);
+        return hasUpper && hasLower && hasNumber;
+    }
+
     // 登录表单提交
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -33,6 +42,12 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const password = registerForm.password.value;
         const confirmPassword = registerForm.confirm_password.value;
+        
+        // 前端密码强度验证
+        if (!validatePassword(password)) {
+            showMessage('密码至少8位，需包含大写字母、小写字母和数字', 'error');
+            return;
+        }
         
         if (password !== confirmPassword) {
             showMessage('两次密码输入不一致', 'error');
