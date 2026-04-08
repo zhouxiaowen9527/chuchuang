@@ -1,0 +1,25 @@
+/* 部门管理页面专用样式 */
+
+/* 卡片头部按钮右对齐（与工作记录页面一致） */
+.card-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+/* 表格操作按钮间距（与工作记录页面风格统一） */
+.table .btn-edit,
+.table .btn-delete {
+    margin-right: 8px;
+}
+.table .btn-edit:last-child,
+.table .btn-delete:last-child {
+    margin-right: 0;
+}
+
+/* 模态框内容宽度（可选） */
+.modal-content {
+    max-width: 500px;
+}

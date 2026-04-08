@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>计件管理 - 蓝莓计件工资系统</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/layout.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo">🫐 蓝莓系统</div>
+            <nav class="nav-menu"></nav>
+            <div class="user-info">
+                <div class="user-name" id="userName"></div>
+                <div class="user-role" id="userRoleDisplay"></div>
+                <button class="btn-logout" id="logoutBtn">登出</button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>计件规格管理</h1>
+                <div class="top-actions">
+                    <button class="btn-primary" onclick="showCreateModal()">+ 新增规格</button>
+                </div>
+            </header>
+
+            <div class="card">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>规格名称</th>
+                            <th>代码</th>
+                            <th>单位</th>
+                            <th>单价</th>
+                            <th>部门</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="specsTable">
+                        <tr><td colspan="7" style="text-align: center; padding: 20px;">加载中...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <div class="modal" id="createModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>新增规格</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="specForm">
+                <div class="form-group">
+                    <label>规格名称</label>
+                    <input type="text" id="specName" required>
+                </div>
+                <div class="form-group">
+                    <label>代码</label>
+                    <input type="text" id="specCode">
+                </div>
+                <div class="form-group">
+                    <label>单位</label>
+                    <input type="text" id="specUnit" required>
+                </div>
+                <div class="form-group">
+                    <label>单价</label>
+                    <input type="number" id="specPrice" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label>部门</label>
+                    <select id="specDept" required>
+                        <option value="">选择部门</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeModal()">取消</button>
+                    <button type="submit" class="btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/router.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            document.getElementById('userName').textContent = user.real_name;
+            document.getElementById('userRoleDisplay').textContent = { employee: '员工', dept_manager: '部门经理', admin: '管理员' }[user.role];
+
+            await loadDepartments(user);
+            await loadSpecs();
+        });
+
+        async function loadDepartments(user) {
+            try {
+                const result = await api.departments.all();
+                const depts = result.data || [];
+                const select = document.getElementById('specDept');
+                select.innerHTML = '<option value="">选择部门</option>';
+                select.disabled = false;
+                depts.forEach(d => {
+                    const option = document.createElement('option');
+                    option.value = d.id;
+                    option.textContent = d.name;
+                    select.appendChild(option);
+                });
+                // 部门经理：自动选中本部门（不禁用）
+                if (user && user.role === 'dept_manager' && depts.length === 1) {
+                    select.value = depts[0].id;
+                }
+            } catch (err) {
+                console.error('加载部门失败:', err);
+            }
+        }
+
+        async function loadSpecs() {
+            try {
+                const result = await api.specs.list({ pageSize: 100 });
+                const specs = result.data.list || [];
+                const tbody = document.getElementById('specsTable');
+
+                if (specs.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">暂无数据</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = specs.map(s => `
+                    <tr>
+                        <td>${s.name}</td>
+                        <td>${s.code || '-'}</td>
+                        <td>${s.unit}</td>
+                        <td>¥${parseFloat(s.unit_price).toFixed(2)}</td>
+                        <td>${s.department_name}</td>
+                        <td>${s.is_active ? '启用' : '禁用'}</td>
+                        <td>
+                            <button class="btn-secondary" onclick="toggleSpec('${s.id}')">
+                                ${s.is_active ? '禁用' : '启用'}
+                            </button>
+                            <button class="btn-danger" onclick="deleteSpec('${s.id}')">删除</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                console.error('加载规格失败:', err);
+            }
+        }
+
+        function showCreateModal() {
+            document.getElementById('createModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('createModal').classList.remove('active');
+        }
+
+        document.getElementById('specForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            try {
+                await api.specs.create({
+                    name: document.getElementById('specName').value,
+                    code: document.getElementById('specCode').value,
+                    unit: document.getElementById('specUnit').value,
+                    unit_price: document.getElementById('specPrice').value,
+                    department_id: document.getElementById('specDept').value
+                });
+                alert('规格创建成功');
+                closeModal();
+                loadSpecs();
+            } catch (err) {
+                alert('创建失败: ' + err.message);
+            }
+        });
+
+        async function toggleSpec(id) {
+            try {
+                await api.specs.toggleActive(id);
+                alert('规格状态已更新');
+                loadSpecs();
+            } catch (err) {
+                alert('更新失败: ' + err.message);
+            }
+        }
+
+        async function deleteSpec(id) {
+            if (!confirm('确定删除此规格吗？')) return;
+            try {
+                await api.specs.delete(id);
+                alert('规格已删除');
+                loadSpecs();
+            } catch (err) {
+                alert('删除失败: ' + err.message);
+            }
+        }
+    </script>
+</body>
+</html>

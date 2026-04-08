@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据看板 - 蓝莓计件工资系统</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/pages/dashboard.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo">🫐 蓝莓系统</div>
+            <nav class="nav-menu"></nav>
+            <div class="user-info">
+                <div class="user-name" id="userName"></div>
+                <div class="user-role" id="userRoleDisplay"></div>
+                <button class="btn-logout" id="logoutBtn">登出</button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>数据看板</h1>
+                <div class="top-actions">
+                    <span id="currentTime"></span>
+                </div>
+            </header>
+
+            <!-- 欢迎区 -->
+            <div class="welcome-section">
+                <h2 id="welcomeText"></h2>
+                <p id="welcomeSubtext"></p>
+            </div>
+
+            <!-- 统计卡片 -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📝</div>
+                    <div class="stat-content">
+                        <div class="stat-label">工作记录</div>
+                        <div class="stat-value" id="recordCount">-</div>
+                        <div class="stat-unit" id="recordUnit">本月条数</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-content">
+                        <div class="stat-label">本月工资</div>
+                        <div class="stat-value" id="totalAmount">-</div>
+                        <div class="stat-unit" id="amountUnit">合计</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">🏢</div>
+                    <div class="stat-content">
+                        <div class="stat-label">部门</div>
+                        <div class="stat-value" id="departmentName">-</div>
+                        <div class="stat-unit">所属部门</div>
+                    </div>
+                </div>
+
+                <div class="stat-card" id="pendingCard">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-content">
+                        <div class="stat-label">待审核</div>
+                        <div class="stat-value" id="pendingCount">-</div>
+                        <div class="stat-unit">用户数</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 管理员统计 -->
+            <div id="adminStats" class="admin-stats" style="display: none;">
+                <h3>系统统计</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">用户总数</div>
+                        <div class="stat-value" id="userCount">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">部门数</div>
+                        <div class="stat-value" id="deptCount">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">小组数</div>
+                        <div class="stat-value" id="groupCount">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">计件规格</div>
+                        <div class="stat-value" id="specCount">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">工作记录</div>
+                        <div class="stat-value" id="totalRecordCount">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">工资单</div>
+                        <div class="stat-value" id="payrollCount">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 快捷操作 -->
+            <div class="quick-actions">
+                <h3>快捷操作</h3>
+                <div class="action-buttons">
+                    <a href="/records.html" class="btn-action">📝 工作记录</a>
+                    <a href="/payroll.html" class="btn-action">💰 工资查询</a>
+                    <a href="/profile.html" class="btn-action">⚙️ 个人设置</a>
+                    <a href="/approvals.html" class="btn-action" id="approvalsBtn" style="display: none;">✅ 用户审核</a>
+                    <a href="/users.html" class="btn-action" id="usersBtn" style="display: none;">👥 用户管理</a>
+                    <a href="/groups.html" class="btn-action" id="groupsBtn" style="display: none;">🏘️ 小组管理</a>
+                    <a href="/specs.html" class="btn-action" id="specsBtn" style="display: none;">📋 计件管理</a>
+                    <a href="/departments.html" class="btn-action" id="deptBtn" style="display: none;">🏢 部门管理</a>
+                    <a href="/maintenance.html" class="btn-action" id="maintenanceBtn" style="display: none;">🔧 数据维护</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/api.js?v=2026032802"></script>
+    <script src="js/router.js?v=2026032802"></script>
+    <script src="js/pages/dashboard.js?v=2026032802"></script>
+</body>
+</html>

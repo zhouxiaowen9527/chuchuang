@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户审核 - 蓝莓计件工资系统</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/pages/approvals.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo">🫐 蓝莓系统</div>
+            <nav class="nav-menu"></nav>
+            <div class="user-info">
+                <div class="user-name" id="userName"></div>
+                <div class="user-role" id="userRoleDisplay"></div>
+                <button class="btn-logout" id="logoutBtn">登出</button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>用户审核</h1>
+            </header>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>待审核用户</h2>
+                </div>
+                <div id="approvalsList"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 审核模态框 -->
+    <div id="approveModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>审核用户</h3>
+                <button class="modal-close" id="closeModalBtn">&times;</button>
+            </div>
+            <form id="approveForm">
+                <input type="hidden" id="approveUserId">
+                <div class="form-group">
+                    <label>姓名</label>
+                    <input type="text" id="approveName" required>
+                </div>
+                <div class="form-group">
+                    <label>邮箱</label>
+                    <input type="email" id="approveEmail" disabled>
+                </div>
+                <div class="form-group">
+                    <label>部门</label>
+                    <select id="approveDept" required>
+                        <option value="">选择部门</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>角色</label>
+                    <select id="approveRole" required>
+                        <option value="employee">员工</option>
+                        <option value="dept_manager">部门经理</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" id="cancelModalBtn">取消</button>
+                    <button type="submit" class="btn-success">批准</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/router.js"></script>
+    <script src="js/pages/approvals.js"></script>
+</body>
+</html>

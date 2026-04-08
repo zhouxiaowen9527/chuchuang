@@ -1,0 +1,82 @@
+/* 工作记录页面专用样式 */
+.date-input {
+    padding: 10px 12px;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--border-radius);
+    font-size: 14px;
+    background-color: white;
+    transition: all 0.3s ease;
+}
+.date-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.group-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--border-radius);
+    font-size: 14px;
+}
+.group-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.spec-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+.spec-select {
+    flex: 2;
+    padding: 8px;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--border-radius);
+}
+.spec-quantity {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--border-radius);
+}
+.btn-remove-spec {
+    background-color: var(--danger-color);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+}
+
+/* 筛选区域布局 */
+.filter-section {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+.filter-section .form-group {
+    margin-bottom: 0;
+}
+.filter-section label {
+    font-size: 12px;
+    margin-bottom: 4px;
+    display: block;
+    color: var(--gray-600);
+}
+.filter-section input,
+.filter-section select {
+    width: 180px;
+    padding: 8px 10px;
+}
+@media (max-width: 768px) {
+    .filter-section input,
+    .filter-section select {
+        width: 100%;
+    }
+}

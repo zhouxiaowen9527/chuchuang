@@ -1,0 +1,43 @@
+/* 数据维护页面专用样式 */
+
+.action-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+}
+
+.info-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    background-color: var(--gray-50);
+    border-radius: var(--border-radius);
+}
+
+.info-label {
+    font-size: 12px;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.info-value {
+    font-size: 16px;
+    color: var(--gray-900);
+    font-weight: 500;
+}
+
+/* 与工作记录页面统一卡片间距 */
+.card {
+    margin-bottom: 20px;
+}
+.card:last-child {
+    margin-bottom: 0;
+}

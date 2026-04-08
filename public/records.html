@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工作记录 - 蓝莓计件工资系统</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/pages/records.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo">🫐 蓝莓系统</div>
+            <nav class="nav-menu"></nav>
+            <div class="user-info">
+                <div class="user-name" id="userName"></div>
+                <div class="user-role" id="userRoleDisplay"></div>
+                <button class="btn-logout" id="logoutBtn">登出</button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>工作记录</h1>
+                <div class="top-actions">
+                    <button class="btn-primary" id="btnAddRecord">+ 新增记录</button>
+                </div>
+            </header>
+
+            <!-- 筛选区域 -->
+            <div class="card filter-card">
+                <div class="filter-section">
+                    <div class="form-group">
+                        <label>部门</label>
+                        <select id="filterDept">
+                            <option value="">所有部门</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>小组</label>
+                        <input type="text" id="filterGroupSearch" list="filterGroupList" placeholder="输入或选择小组" autocomplete="off">
+                        <datalist id="filterGroupList"></datalist>
+                    </div>
+                    <div class="form-group">
+                        <label>开始日期</label>
+                        <input type="date" id="startDate">
+                    </div>
+                    <div class="form-group">
+                        <label>结束日期</label>
+                        <input type="date" id="endDate">
+                    </div>
+                    <button class="btn-secondary" id="btnSearch">查询</button>
+                    <button class="btn-secondary" id="btnReset">重置</button>
+                </div>
+            </div>
+
+            <!-- 数据表格 -->
+            <div class="card">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>日期</th>
+                            <th>员工</th>
+                            <th>小组</th>
+                            <th>计件规格</th>
+                            <th>数量</th>
+                            <th>小组总收入(元)</th>
+                            <th>人均收入(元)</th>
+                            <th>操作</th>
+                        </thead>
+                    <tbody id="recordsTable">
+                        <tr><td colspan="8" style="text-align:center">加载中...</td></tr>
+                    </tbody>
+                </table>
+                <div id="pagination" class="pagination"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 新增/编辑记录模态框 -->
+    <div id="recordModal" class="modal">
+        <div class="modal-content" style="max-width: 650px;">
+            <div class="modal-header">
+                <h3 id="modalTitle">新增工作记录</h3>
+                <button class="modal-close" id="closeModalBtn">&times;</button>
+            </div>
+            <form id="recordForm">
+                <input type="hidden" id="recordId">
+                <div class="form-group">
+                    <label>部门 *</label>
+                    <select id="recordDept" required>
+                        <option value="">选择部门</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>小组 *</label>
+                    <input type="text" id="groupSearch" list="groupList" placeholder="输入或选择小组" required autocomplete="off">
+                    <datalist id="groupList"></datalist>
+                    <input type="hidden" id="selectedGroupId">
+                </div>
+                <div class="form-group">
+                    <label>工作日期 *</label>
+                    <input type="date" id="workDate" required>
+                </div>
+                <div class="form-group">
+                    <label>计件规格</label>
+                    <div id="specsContainer"></div>
+                    <button type="button" class="btn-secondary" id="btnAddSpec">+ 添加规格</button>
+                </div>
+                <div class="form-group">
+                    <label>备注</label>
+                    <textarea id="notes" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>小组总收入预览</label>
+                    <span id="totalIncome">0.00</span> 元
+                </div>
+                <div class="form-group">
+                    <label>人均收入预览</label>
+                    <span id="perPersonIncome">0.00</span> 元
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" id="cancelBtn">取消</button>
+                    <button type="submit" class="btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/router.js"></script>
+    <script src="js/pages/records.js"></script>
+</body>
+</html>

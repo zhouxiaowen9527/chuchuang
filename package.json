@@ -1,0 +1,25 @@
+{
+  "name": "blueberry-payroll",
+  "version": "1.0.0",
+  "description": "蓝莓计件工资系统 - 楚创人力",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "node --watch src/app.js",
+    "init-db": "node scripts/init-db.js",
+    "test-data": "node scripts/create-test-data.js",
+    "test-dashboard": "node scripts/test-dashboard.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "pg": "^8.11.3",
+    "serverless-http": "^4.0.0",
+    "uuid": "^9.0.0"
+  }
+}

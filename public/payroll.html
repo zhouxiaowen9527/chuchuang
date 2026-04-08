@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工资查询 - 蓝莓计件工资系统</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/pages/payroll.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo">🫐 蓝莓系统</div>
+            <nav class="nav-menu"></nav>
+            <div class="user-info">
+                <div class="user-name" id="userName"></div>
+                <div class="user-role" id="userRoleDisplay"></div>
+                <button class="btn-logout" id="logoutBtn">登出</button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>工资查询</h1>
+                <div class="top-actions">
+                    <button class="btn-primary" id="exportBtn">📥 导出明细</button>
+                </div>
+            </header>
+
+            <!-- 筛选区域 -->
+            <div class="card filter-card">
+                <!-- 添加这两个id用于权限控制 -->
+                <div class="form-group" id="deptGroup">
+                    <label>部门</label>
+                    <select id="deptFilter">
+                        <option value="">所有部门</option>
+                    </select>
+                </div>
+                <div class="form-group" id="employeeGroup">
+                    <label>员工</label>
+                    <select id="employeeFilter">
+                        <option value="">所有员工</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>开始日期</label>
+                    <input type="date" id="startDate">
+                </div>
+                <div class="form-group">
+                    <label>结束日期</label>
+                    <input type="date" id="endDate">
+                </div>
+                <button class="btn-secondary" id="searchBtn">查询</button>
+                <button class="btn-secondary" id="resetBtn">重置</button>
+            </div>
+
+            <!-- 汇总表 -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>工资汇总</h2>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>姓名</th>
+                            <th>日期范围</th>
+                            <th>总收入(元)</th>
+                        </thead>
+                    <tbody id="summaryTable">
+                        <td colspan="3" style="text-align:center">请选择条件后查询</td>
+                    </tbody>
+                 </table>
+            </div>
+
+            <!-- 明细表 -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>工资明细</h2>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>日期</th>
+                            <th>姓名</th>
+                            <th>计件规格</th>
+                            <th>数量</th>
+                            <th>小组总收入(元)</th>
+                            <th>人均收入(元)</th>
+                        </thead>
+                    <tbody id="detailTable">
+                        <td colspan="6" style="text-align:center">请选择条件后查询</td>
+                    </tbody>
+                 </table>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/router.js"></script>
+    <script src="js/pages/payroll.js"></script>
+</body>
+</html>

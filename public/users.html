@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户管理 - 蓝莓计件工资系统</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/layout.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo">🫐 蓝莓系统</div>
+            <nav class="nav-menu"></nav>
+            <div class="user-info">
+                <div class="user-name" id="userName"></div>
+                <div class="user-role" id="userRoleDisplay"></div>
+                <button class="btn-logout" id="logoutBtn">登出</button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>用户管理</h1>
+                <div class="top-actions">
+                    <button class="btn-primary" id="btnAddUser">+ 新增用户</button>
+                </div>
+            </header>
+
+            <div class="card">
+                <div class="filter-section">
+                    <input type="text" id="keyword" placeholder="搜索用户...">
+                    <select id="roleFilter">
+                        <option value="">所有角色</option>
+                        <option value="employee">员工</option>
+                        <option value="dept_manager">部门经理</option>
+                        <option value="admin">管理员</option>
+                    </select>
+                    <button class="btn-secondary" id="btnSearch">查询</button>
+                    <button class="btn-secondary" id="btnReset">重置</button>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>姓名</th>
+                            <th>邮箱</th>
+                            <th>角色</th>
+                            <th>部门</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </thead>
+                    <tbody id="usersTable">
+                        <tr><td colspan="6" style="text-align: center; padding: 20px;">加载中...</td></tr>
+                    </tbody>
+                </table>
+
+                <div id="pagination" class="pagination"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 新增/编辑用户模态框 -->
+    <div id="userModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 id="modalTitle">新增用户</h3>
+                <button class="modal-close" id="closeModalBtn">&times;</button>
+            </div>
+            <form id="userForm">
+                <input type="hidden" id="userId">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>邮箱 *</label>
+                        <input type="email" id="userEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label>姓名 *</label>
+                        <input type="text" id="userRealName" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>手机号 *</label>
+                        <input type="tel" id="userPhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label>身份证号</label>
+                        <input type="text" id="userIdCard">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>银行卡户名</label>
+                        <input type="text" id="userBankName">
+                    </div>
+                    <div class="form-group">
+                        <label>银行卡号</label>
+                        <input type="text" id="userBankCard">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>开户银行</label>
+                    <input type="text" id="userBankBank">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>部门 *</label>
+                        <select id="userDept" required>
+                            <option value="">选择部门</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>角色 *</label>
+                        <select id="userRole" required>   <!-- 下拉框ID保持不变 -->
+                            <option value="employee">员工</option>
+                            <option value="dept_manager">部门经理</option>
+                            <option value="admin">管理员</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" id="passwordGroup">
+                    <label>密码（新增时必填，编辑时留空则不修改）</label>
+                    <input type="password" id="userPassword" placeholder="至少6位">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" id="cancelBtn">取消</button>
+                    <button type="submit" class="btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/router.js"></script>
+    <script src="js/pages/users.js"></script>
+</body>
+</html>

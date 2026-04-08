@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小组管理 - 蓝莓计件工资系统</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/layout.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo">🫐 蓝莓系统</div>
+            <nav class="nav-menu"></nav>
+            <div class="user-info">
+                <div class="user-name" id="userName"></div>
+                <div class="user-role" id="userRoleDisplay"></div>
+                <button class="btn-logout" id="logoutBtn">登出</button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>小组管理</h1>
+                <div class="top-actions">
+                    <button class="btn-primary" id="btnAddGroup">+ 新增小组</button>
+                </div>
+            </header>
+
+            <div class="card">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>小组名称</th>
+                            <th>部门</th>
+                            <th>成员数</th>
+                            <th>成员</th>
+                            <th>操作</th>
+                        </thead>
+                    <tbody id="groupsTable">
+                        叭<td colspan="5" style="text-align: center; padding: 20px;">加载中...</td>
+                    </tbody>
+                </table>
+                <div id="pagination" class="pagination"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 新增/编辑小组模态框 -->
+    <div id="groupModal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3 id="modalTitle">新增小组</h3>
+                <button class="modal-close" id="closeModalBtn">&times;</button>
+            </div>
+            <form id="groupForm">
+                <input type="hidden" id="groupId">
+                <div class="form-group">
+                    <label>部门 *</label>
+                    <select id="groupDept" required>
+                        <option value="">选择部门</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>成员（最多4人，可包含员工和部门经理）</label>
+                    <div id="membersList"></div>
+                    <button type="button" class="btn-secondary" id="addMemberBtn">+ 添加成员</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" id="cancelBtn">取消</button>
+                    <button type="submit" class="btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/router.js"></script>
+    <script src="js/pages/groups.js"></script>
+</body>
+</html>

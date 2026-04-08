@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>部门管理 - 蓝莓计件工资系统</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/pages/dept.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo">🫐 蓝莓系统</div>
+            <nav class="nav-menu"></nav>
+            <div class="user-info">
+                <div class="user-name" id="userName"></div>
+                <div class="user-role" id="userRoleDisplay"></div>
+                <button class="btn-logout" id="logoutBtn">登出</button>
+            </div>
+        </aside>
+        <main class="main-content">
+            <div class="top-bar">
+                <h1>部门管理</h1>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <button id="btnAdd" class="btn-success">新增部门</button>
+                </div>
+
+                <div id="message" style="display: none;"></div>
+
+                <table id="departmentTable" class="table">
+                    <thead>
+                        <tr>
+                            <th>部门名称</th>
+                            <th>部门经理</th>
+                            <th>成员数</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+                <div id="pagination" class="pagination"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 部门编辑模态框（保持不变） -->
+    <div id="deptModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">新增部门</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="deptForm">
+                <input type="hidden" id="deptId">
+                <div class="form-group">
+                    <label>部门名称</label>
+                    <input type="text" id="deptName" required>
+                </div>
+                <div class="form-group">
+                    <label>部门经理</label>
+                    <select id="deptManagerId">
+                        <option value="">请选择部门经理</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>描述</label>
+                    <textarea id="deptDescription" rows="3"></textarea>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal()">取消</button>
+                <button class="btn-primary" onclick="saveDepartment()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/router.js"></script>
+    <script src="js/pages/departments.js"></script>
+</body>
+</html>

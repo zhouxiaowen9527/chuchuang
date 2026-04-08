@@ -1,0 +1,7 @@
+/* 个人设置页面专用样式（可选） */
+.card {
+    margin-bottom: 20px;
+}
+.card:last-child {
+    margin-bottom: 0;
+}
